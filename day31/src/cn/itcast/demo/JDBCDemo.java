@@ -7,7 +7,11 @@ import java.sql.Statement;
 
 import com.mysql.jdbc.Driver;
 
+<<<<<<< HEAD
 // hello world 鍙垹杩欒!!!
+=======
+// hello world 这行可删
+>>>>>>> branch 'master' of https://github.com/wyy2019/eclipseRemote.git
 /**
 	DBC寮�鍙戞楠�
 		1.娉ㄥ唽椹卞姩.
