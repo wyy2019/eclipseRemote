@@ -7,6 +7,8 @@ import java.sql.Statement;
 
 import com.mysql.jdbc.Driver;
 
+
+# 这行可删
 /**
 	DBC开发步骤
 		1.注册驱动.
