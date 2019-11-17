@@ -7,54 +7,54 @@ import java.sql.Statement;
 
 import com.mysql.jdbc.Driver;
 
-# hello world 可删这行
+// hello world 鍙垹杩欒!!!
 /**
-	DBC开发步骤
-		1.注册驱动.
-			告知JVM使用的是哪z一个数据库驱动
-		2.获得连接.
-			使用JDBC中的类，完成对MYSQL数据库的连接
-		3.获得语句执行平台
-			通过连接对象获取对SQL语句的执行者对象
-		4.执行sql语句
-			使用执行者对象，向数据库执行SQL语句
-			获取到数据库的执行结果
-		5.处理结果
-		6.释放资源.
+	DBC寮�鍙戞楠�
+		1.娉ㄥ唽椹卞姩.
+			鍛婄煡JVM浣跨敤鐨勬槸鍝獄涓�涓暟鎹簱椹卞姩
+		2.鑾峰緱杩炴帴.
+			浣跨敤JDBC涓殑绫伙紝瀹屾垚瀵筂YSQL鏁版嵁搴撶殑杩炴帴
+		3.鑾峰緱璇彞鎵ц骞冲彴
+			閫氳繃杩炴帴瀵硅薄鑾峰彇瀵筍QL璇彞鐨勬墽琛岃�呭璞�
+		4.鎵цsql璇彞
+			浣跨敤鎵ц鑰呭璞★紝鍚戞暟鎹簱鎵цSQL璇彞
+			鑾峰彇鍒版暟鎹簱鐨勬墽琛岀粨鏋�
+		5.澶勭悊缁撴灉
+		6.閲婃斁璧勬簮.
  */
 public class JDBCDemo {
 	public static void main(String[] args) throws SQLException, ClassNotFoundException{
-		/*1.注册驱动
-			使用java.sql.DriverManager类静态方法registerDriver(Driver driver)
-			Driver是一个接口，参数传递，MySQL驱动程序中的实现类
+		/*1.娉ㄥ唽椹卞姩
+			浣跨敤java.sql.DriverManager绫婚潤鎬佹柟娉時egisterDriver(Driver driver)
+			Driver鏄竴涓帴鍙ｏ紝鍙傛暟浼犻�掞紝MySQL椹卞姩绋嬪簭涓殑瀹炵幇绫�
 			DriverManager.registerDriver(new Driver());
-			通过看驱动类Driver()的源码，我们可以看到，使用上一行代码注册驱动会注册2次驱动程序
-			所有注册驱动推荐使用反射技术Class.forName("foo.bah.Driver")，将驱动类加入到内存
+			閫氳繃鐪嬮┍鍔ㄧ被Driver()鐨勬簮鐮侊紝鎴戜滑鍙互鐪嬪埌锛屼娇鐢ㄤ笂涓�琛屼唬鐮佹敞鍐岄┍鍔ㄤ細娉ㄥ唽2娆￠┍鍔ㄧ▼搴�
+			鎵�鏈夋敞鍐岄┍鍔ㄦ帹鑽愪娇鐢ㄥ弽灏勬妧鏈疌lass.forName("foo.bah.Driver")锛屽皢椹卞姩绫诲姞鍏ュ埌鍐呭瓨
 		 */		
-		Class.forName("com.mysql.jdbc.Driver");//避免两次注册
+		Class.forName("com.mysql.jdbc.Driver");//閬垮厤涓ゆ娉ㄥ唽
 		
-		//2.获得数据库的连接,DriverManager类中静态方法
+		//2.鑾峰緱鏁版嵁搴撶殑杩炴帴,DriverManager绫讳腑闈欐�佹柟娉�
 		//DriverManager.getConnection(url, user, password)
-		//返回值是Connection接口实现类,在mysql驱动程序中
-		//url:数据库连接地址		jdbc:mysql://连接主机IP：端口号//数据库名字
+		//杩斿洖鍊兼槸Connection鎺ュ彛瀹炵幇绫�,鍦╩ysql椹卞姩绋嬪簭涓�
+		//url:鏁版嵁搴撹繛鎺ュ湴鍧�		jdbc:mysql://杩炴帴涓绘満IP锛氱鍙ｅ彿//鏁版嵁搴撳悕瀛�
 		String url = "jdbc:mysql://localhost:3306/test";
 		String username = "root";
 		String password = "root";
 		Connection con =  DriverManager.getConnection(url, username, password);
 
-		//3.获取语句执行平台，通过数据库连接对象，获取到SQL语句的执行者对象
-		//con对象调用方法  Statement createStatement()获取Statement对象，将SQL语句发送到数据库
-		//返回值是Statement接口的实现类对象，在mysql驱动程序中
+		//3.鑾峰彇璇彞鎵ц骞冲彴锛岄�氳繃鏁版嵁搴撹繛鎺ュ璞★紝鑾峰彇鍒癝QL璇彞鐨勬墽琛岃�呭璞�
+		//con瀵硅薄璋冪敤鏂规硶  Statement createStatement()鑾峰彇Statement瀵硅薄锛屽皢SQL璇彞鍙戦�佸埌鏁版嵁搴�
+		//杩斿洖鍊兼槸Statement鎺ュ彛鐨勫疄鐜扮被瀵硅薄锛屽湪mysql椹卞姩绋嬪簭涓�
 		Statement stat = con.createStatement();
 		
-		//4.执行SQL语句
-		//通过执行者对象调用方法执行SQL语句，获取结果
-		//int executeUpdate(String sql)		执行数据库中的SQL语句,	insert delete update
-		//返回值int,操作成功数据表多少行
-		int row = stat.executeUpdate("INSERT INTO sort(sname, sprice, sdesc) VALUES('美容美发',3000,'热门促销')");
+		//4.鎵цSQL璇彞
+		//閫氳繃鎵ц鑰呭璞¤皟鐢ㄦ柟娉曟墽琛孲QL璇彞锛岃幏鍙栫粨鏋�
+		//int executeUpdate(String sql)		鎵ц鏁版嵁搴撲腑鐨凷QL璇彞,	insert delete update
+		//杩斿洖鍊糹nt,鎿嶄綔鎴愬姛鏁版嵁琛ㄥ灏戣
+		int row = stat.executeUpdate("INSERT INTO sort(sname, sprice, sdesc) VALUES('缇庡缇庡彂',3000,'鐑棬淇冮攢')");
 		System.out.println(row);
 		
-		//6.释放资源
+		//6.閲婃斁璧勬簮
 		stat.close();
 		con.close();
 		
